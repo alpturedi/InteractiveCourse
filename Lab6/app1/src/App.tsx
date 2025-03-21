@@ -1,20 +1,9 @@
-import { useState } from "react";
-import Button from "./components/Button";
-import { CountContext } from "./context";
+import UserProfileForm from "./components/UserProfileForm";
 
-function App() {
-  const [count, _setCount] = useState(0);
-
+export default function App() {
   return (
     <div className="w-[100vw] text-center mx-auto my-0 p-8">
-      <span>Count is {count}</span>
-      <br />
-      <CountContext.Provider value={count}>
-        <Button />
-        <Button />
-      </CountContext.Provider>
+      <UserProfileForm />
     </div>
   );
 }
-
-export default App;

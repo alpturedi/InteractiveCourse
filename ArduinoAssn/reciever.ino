@@ -8,11 +8,13 @@ BLEByteCharacteristic switchCharacteristic("2A50", BLERead | BLEWrite);
 BLEByteCharacteristic distanceCharacteristic("2A57", BLERead | BLEWrite);
 BLEByteCharacteristic lightCharacteristic("2A60", BLERead | BLEWrite);
 
-const int ledPin = LED_BUILTIN;  // pin to use for the LED
-const int buzzerPin = 5;
+const int ledPin = LED_BUILTIN;  // Built-in LED pin
+const int buzzerPin = 5;  //pin for piezo buzzer
 
 ArduinoLEDMatrix matrix;
 
+
+//Initialize the array to use for the LED matrix with zeros
 uint8_t frame[8][12] = {
   { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
   { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -24,13 +26,17 @@ uint8_t frame[8][12] = {
   { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 };
 
+//We get distance and light as byte
 byte distance, light;
 
 void setup() {
   Serial.begin(9600);
+
+  //Wait for the serial to be initialized. Coming from sample code.
   while (!Serial)
     ;
 
+  //Set the LED matrix
   matrix.begin();
 
 
@@ -99,6 +105,7 @@ void loop() {
         distance = distanceCharacteristic.value();
         Serial.println(distance);
 
+        //If distance is greater than 10, turn on the buzzer
         if (distance > 10) {
           Serial.println("Distance exc");
           tone(buzzerPin, 392);
@@ -114,6 +121,8 @@ void loop() {
         light = lightCharacteristic.value();
         Serial.println(light);
 
+        //Light value was around 50 to 110 so we subtracted 10 and
+        //LED matrix has almost same amount of LEDs so we turn on that many
         for(int i=0; i<8; i++){
           for(int j=0; j<12; j++){
             if((light-10)>((i*12)+j)){

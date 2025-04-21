@@ -1,13 +1,17 @@
 #include <ArduinoBLE.h>
 
-// variables for button
+//All the pins that are used
 const int buttonPin = 4;
-const int trigPin = 9;
-const int echoPin = 10;
 const int lightPin = A0;
 
+//Ultrasonic sensor pins
+const int trigPin = 9;
+const int echoPin = 10;
+
+//Button logic
 int oldButtonState = LOW;
 
+//Globals for distance and light
 byte distance;
 byte light;
 
@@ -85,6 +89,8 @@ void controlLed(BLEDevice peripheral) {
   BLECharacteristic distanceCharacteristic = peripheral.characteristic("2A57");
   BLECharacteristic lightCharacteristic = peripheral.characteristic("2A60");
 
+
+  //Check if all characteristics are available
   if (!ledCharacteristic) {
     Serial.println("Peripheral does not have LED characteristic!");
     peripheral.disconnect();
@@ -149,6 +155,7 @@ void controlLed(BLEDevice peripheral) {
   Serial.println("Peripheral disconnected");
 }
 
+//Measure distance and post it to serial and convert it to byte
 void measureDistance(){
   long duration;
   // Clears the trigPin
@@ -171,14 +178,12 @@ void measureDistance(){
   Serial.println(distance);
 }
 
-
+//Measure light and post it to serial 
+//and convert it to byte by scaling it down by 10
 void measureLight(){
   int analogValue = analogRead(lightPin);
-  // Serial.print("Light reading: ");
-  // Serial.println(analogValue);
-  
-  light = (byte)(analogValue/10);
 
+  light = (byte)(analogValue/10);
 
   Serial.print("Analog Light: ");
   Serial.println(analogValue);

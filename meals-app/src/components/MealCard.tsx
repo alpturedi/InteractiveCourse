@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-// import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 
@@ -12,12 +11,12 @@ export type Meal = {
 type MealProps = { meal: Meal } & React.ComponentProps<typeof Card>;
 
 export default function MealCard({ className, meal, ...props }: MealProps) {
-  const favMealIds = JSON.parse(sessionStorage.getItem("favMealIds") ?? "[]");
+  const favMealIds = JSON.parse(localStorage.getItem("favMealIds") ?? "[]");
 
   const isChecked = Array.isArray(favMealIds) && favMealIds?.find((mealId) => mealId === meal.idMeal) ? true : false;
 
   const handleCheckedChange = (checked: boolean) => {
-    const favMealIds = JSON.parse(sessionStorage.getItem("favMealIds") ?? "[]");
+    const favMealIds = JSON.parse(localStorage.getItem("favMealIds") ?? "[]");
     if (checked) {
       favMealIds.push(meal.idMeal);
     } else {
@@ -26,7 +25,7 @@ export default function MealCard({ className, meal, ...props }: MealProps) {
         favMealIds.splice(index, 1);
       }
     }
-    sessionStorage.setItem("favMealIds", JSON.stringify(favMealIds));
+    localStorage.setItem("favMealIds", JSON.stringify(favMealIds));
   };
 
   return (

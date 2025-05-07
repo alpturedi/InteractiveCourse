@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-
+import { Button } from "@/components/ui/button";
 import MealCard, { Meal } from "./components/MealCard";
 import CategorySelect, { Category } from "./components/CategorySelect";
 import SearchBar from "./components/SearchBar";
 
 function App() {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [meals, setMeals] = useState([]);
+  const [meals, setMeals] = useState<Meal[]>([]);
 
   const [isSearchActive, setIsSearchActive] = useState(false);
 
@@ -34,6 +34,20 @@ function App() {
     setMeals(meals);
   }
 
+  async function getFavorites() {
+    const favMealIds = JSON.parse(localStorage.getItem("favMealIds") ?? "[]");
+    setIsSearchActive(true);
+    console.log("¡ ⛰️ ~ getFavorites ~ favMealIds⛰️ !", favMealIds);
+
+    const meals = await Promise.all(
+      favMealIds.map(async (mealId: string) => {
+        const { meals } = await (await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`)).json();
+        return meals[0];
+      })
+    );
+    setMeals(meals);
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
@@ -42,6 +56,11 @@ function App() {
 
           <div className="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
             <CategorySelect categories={categories} onChange={onCategoryChange} isSearchActive={isSearchActive} />
+            <Button className="text-sm hover:text-gray-200" onClick={getFavorites}>
+              Show Favorites
+            </Button>
+            <div className="hidden md:block flex-1" />
+
             <SearchBar onSearch={onSearch} />
           </div>
         </header>

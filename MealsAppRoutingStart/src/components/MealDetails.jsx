@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { RANDOM_MEAL_API as RANDOM_API, MEAL_BYID_API as MEAL_BYID_API, SEARCH_MEAL_API as SEARCH_API } from "@helpers/constants";
+
 const MealDetails = ({ id }) => {
   const [meal, setMeal] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -7,9 +9,7 @@ const MealDetails = ({ id }) => {
   useEffect(() => {
     const fetchMealDetails = async () => {
       try {
-        const response = await fetch(
-          `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
-        );
+        const response = await fetch(MEAL_BYID_API(id));
         const data = await response.json();
         setMeal(data.meals[0]);
       } catch (error) {
@@ -20,7 +20,7 @@ const MealDetails = ({ id }) => {
     };
 
     fetchMealDetails();
-  });
+  }, [id]);
 
   if (loading) return <div className="loading">Loading meal details...</div>;
   if (!meal) return <div>Meal not found</div>;

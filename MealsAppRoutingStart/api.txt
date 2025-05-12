@@ -1,3 +1,0 @@
-VITE_RANDOM_MEAL_API = "https://www.themealdb.com/api/json/v1/1/random.php"
-VITE_MEAL_BYID_API = "https://www.themealdb.com/api/json/v1/1/lookup.php?i="
-VITE_SEARCH_MEAL_API = "https://www.themealdb.com/api/json/v1/1/search.php?s="

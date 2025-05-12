@@ -1,12 +1,17 @@
-# React + Vite
+# Development Log
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 1. Partial Porting to TypeScript
 
-Currently, two official plugins are available:
+It's always tricky to switch to TypeScript on an established project. Some imports weren't working. You also need to add `"allowJs": true` to your tsconfig file.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+I couldn't figure out directly importing a css to js file which I'm not a big fan of either. I moved the existing css to index.css. I added tailwind as well therefore modifying css will be minimal anyway.
 
-## Expanding the ESLint configuration
+### 2. Handling of API Routes
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Existing app were reading it from .env file. There are no secrets in the routes so I moved them to a contants.ts file.
+
+### 3. Added aliases for common folders
+
+### 4. Struggle for creating a layout
+
+Vite template's css confused me before. I should delete it before starting to work. The root and body items messes up with the layout for some reason. It took me some time to remember to delete those.

@@ -1,11 +1,10 @@
-import Search from "../components/Search";
-import Favorites from "../components/Favorites";
-import MealCard from "../components/MealCard";
 import { useEffect, useState } from "react";
 
-const RANDOM_API = import.meta.env.VITE_RANDOM_MEAL_API;
-const MEAL_BYID_API = import.meta.env.VITE_MEAL_BYID_API;
-const SEARCH_API = import.meta.env.VITE_SEARCH_MEAL_API;
+import Search from "@components/Search";
+import Favorites from "@components/Favorites";
+import MealCard from "@components/MealCard";
+
+import { RANDOM_MEAL_API as RANDOM_API, MEAL_BYID_API as MEAL_BYID_API, SEARCH_MEAL_API as SEARCH_API } from "@helpers/constants";
 
 const Home = () => {
   const [randomMeal, setRandomMeal] = useState(null);
@@ -28,13 +27,13 @@ const Home = () => {
   };
 
   const getMealById = async (id) => {
-    const resp = await fetch(MEAL_BYID_API + id);
+    const resp = await fetch(MEAL_BYID_API(id));
     const data = await resp.json();
     return data.meals[0];
   };
 
   const getMealsBySearch = async (searchTerm) => {
-    const resp = await fetch(SEARCH_API + searchTerm);
+    const resp = await fetch(SEARCH_API(searchTerm));
     const data = await resp.json();
     return data.meals;
   };
@@ -50,9 +49,7 @@ const Home = () => {
 
     // Load full meal data for favorites
     const loadFavoriteMeals = async () => {
-      const favoriteMeals = await Promise.all(
-        mealIds.map((id) => getMealById(id))
-      );
+      const favoriteMeals = await Promise.all(mealIds.map((id) => getMealById(id)));
       setFavoriteMeals(favoriteMeals);
     };
 
@@ -68,9 +65,7 @@ const Home = () => {
     if (favoriteMealIds.includes(mealId)) {
       // Remove from favorites
       updatedFavorites = favoriteMealIds.filter((id) => id !== mealId);
-      updatedFavoriteMeals = favoriteMeals.filter(
-        (meal) => meal.idMeal !== mealId
-      );
+      updatedFavoriteMeals = favoriteMeals.filter((meal) => meal.idMeal !== mealId);
     } else {
       // Add to favorites
       updatedFavorites = [...favoriteMealIds, mealId];
@@ -93,27 +88,14 @@ const Home = () => {
     <div className="store">
       <Search onSearch={handleSearch} />
 
-      <Favorites
-        favoriteMeals={favoriteMeals}
-        removeFavorite={toggleFavorite}
-      />
+      <Favorites favoriteMeals={favoriteMeals} removeFavorite={toggleFavorite} />
 
       <div className="meals" id="meals">
         {meals.length === 0 && randomMeal && (
-          <MealCard
-            meal={randomMeal}
-            isRandom={true}
-            onFavoriteToggle={toggleFavorite}
-            isFavorite={favoriteMealIds.includes(randomMeal.idMeal)}
-          />
+          <MealCard meal={randomMeal} isRandom={true} onFavoriteToggle={toggleFavorite} isFavorite={favoriteMealIds.includes(randomMeal.idMeal)} />
         )}
         {meals.map((meal) => (
-          <MealCard
-            key={meal.idMeal}
-            meal={meal}
-            onFavoriteToggle={toggleFavorite}
-            isFavorite={favoriteMealIds.includes(meal.idMeal)}
-          />
+          <MealCard key={meal.idMeal} meal={meal} onFavoriteToggle={toggleFavorite} isFavorite={favoriteMealIds.includes(meal.idMeal)} />
         ))}
       </div>
     </div>

@@ -1,6 +1,6 @@
 import NavBar from "@/components/NavBar";
 import { Link } from "react-router";
-import { ROUTES } from "@/helpers/constants";
+import { ROUTES } from "@/helpers/routes";
 
 export function SiteHeader() {
   return (

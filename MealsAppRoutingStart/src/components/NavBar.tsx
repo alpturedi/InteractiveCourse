@@ -12,10 +12,11 @@ export default function NavBar({ items }: /*MainNavProps*/ any) {
         <nav className="flex gap-6">
           {items?.map(
             (item: any, index: number) =>
-              item.href && (
+              item.path &&
+              !item.hidden && (
                 <Link
                   key={index}
-                  to={item.href}
+                  to={item.path}
                   className={cn("flex items-center text-sm font-medium text-muted-foreground", item.disabled && "cursor-not-allowed opacity-80")}
                 >
                   {item.title}

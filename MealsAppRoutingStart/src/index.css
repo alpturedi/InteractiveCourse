@@ -16,7 +16,7 @@ body {
 
 a {
   text-decoration: none;
-  color: inherit;
+  /* color: inherit; */
 }
 
 /* Layout */
@@ -223,7 +223,7 @@ a {
 }
 
 /* Active (favorited) state */
-.fav-btn.active {
+.fav-btn>.active {
   color: #ff6b6b;
 }
 
